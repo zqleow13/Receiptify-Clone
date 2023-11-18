@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, jsonify
 import base64
 import requests
 import random
@@ -74,7 +74,37 @@ def callback():
 
         return 'Token obtained successfully'
     
-    # Refresh access token
+# Refresh access token
+@app.route('/refresh_token', methods=['GET'])
+def refresh_token():
+    refresh_token = request.args.get('refresh_token')
+
+    auth_options = {
+        'url': 'https://accounts.spotify.com/api/token',
+        'headers': {
+            'content-type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + base64.b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode()
+        },
+        'data': {
+            'grant_type': 'refresh_token',
+            'refresh_token': refresh_token
+        }
+    }
+
+    response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
+
+    if response.status_code == 200:
+        data = response.json()
+        access_token = data.get('access_token')
+        new_refresh_token = data.get('refresh_token', refresh_token)
+
+        return jsonify({
+            'access_token': access_token,
+            'refresh_token': new_refresh_token
+        })
+    else:
+        return jsonify({'error': 'Unable to refresh token'}), response.status_code
+
 
 if __name__ == 'main':
     app.run()
