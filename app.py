@@ -22,10 +22,11 @@ def generate_random_string(length):
     letters_and_digits = string.ascii_letters + string.digits
     return ''.join(random.choice(letters_and_digits) for i in range(length))
 
+
 # root state
 @app.route('/')
 def home():
-    return 'Hello, World!'
+    return 'Welcome to Receiptify'
 
 # Login route
 @app.route('/login')
@@ -44,12 +45,13 @@ def login():
     return redirect(spotify_auth_url)
 
 # Request access token from Spotify
+# FIXME: state is now None, change the code below to match the state
 @app.route('/callback')
 def callback():
     code = request.args.get('code', None)
-    state = request.args.get('state', None)
+    new_state = request.args.get('state', None)
 
-    if state is None:
+    if new_state is None:
         return redirect('/#' + urllib.parse.urlencode({'error': 'state_mismatch'}))
     else:
         auth_options = {
@@ -70,6 +72,7 @@ def callback():
 
         # Handle the token information as needed (e.g., save it to session, database, etc.)
         # For demonstration purposes, printing the token information
+        #TODO: change the below code to save it to session
         print(token_info)
 
         return 'Token obtained successfully'
@@ -106,5 +109,5 @@ def refresh_token():
         return jsonify({'error': 'Unable to refresh token'}), response.status_code
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     app.run()
