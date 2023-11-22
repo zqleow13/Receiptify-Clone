@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, jsonify, url_for
+from flask_session import Session
 import base64
 import requests
 import random
@@ -12,10 +13,17 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# Configure session
+app.config["SESSION_TYPE"] = 'filesystem'
+
 # Client ID & Redirect URI
 CLIENT_ID = os.getenv("client_ID")
 CLIENT_SECRET = os.getenv("client_SECRET")
 REDIRECT_URI = os.getenv("redirect_uri")
+
+# Secret key
+# print(os.urandom(12))
+app.secret_key = os.getenv('secret_key')
 
 # Generate random string for state
 def generate_random_string(length):
@@ -28,11 +36,14 @@ def generate_random_string(length):
 def home():
     return render_template("index.html")
 
+
 # Login route
 @app.route('/login')
 def login():
     state = generate_random_string(16)
     scope = 'user-read-private user-read-email' # user-read-private & user-read-email scopes: get current user's profile 
+    
+    session['state'] = state
     
     # Redirect user to Spotify authorisation URL
     spotify_auth_url = 'https://accounts.spotify.com/authorize?' + urllib.parse.urlencode({
@@ -44,15 +55,22 @@ def login():
     })
     return redirect(spotify_auth_url)
 
+
 # Request access token from Spotify
 # FIXME: state is now None, change the code below to match the state
 @app.route('/callback')
 def callback():
     code = request.args.get('code', None)
     new_state = request.args.get('state', None)
+    
+    print(f"Code: {code}")
+    print(f"New State: {new_state}")
+    
+    # Retrieve the stored state from the session
+    stored_state = session.get('state', None)
 
-    if new_state is None:
-        return redirect('/#' + urllib.parse.urlencode({'error': 'state_mismatch'}))
+    if new_state != stored_state:
+        return redirect(url_for('error', error_message='state_mismatch'))
     else:
         auth_options = {
             'url': 'https://accounts.spotify.com/api/token',
@@ -76,11 +94,24 @@ def callback():
             session['refresh_token'] = token_info.get('refresh_token', None)
             
             # Redirect the user to the id card page aka idcard.html
-            return render_template('idcard.html')
+            return redirect(url_for('/idcard'))
         
         else:
             # To return error message if access token is not present
-            return redirect(url_for('error'))
+            return redirect(url_for('/error', error_message='token_error'))
+        
+
+@app.route('/idcard')
+def idcard():
+    return render_template('idcard.html')
+        
+        
+# Error route
+@app.route('/error')
+def error():
+    error_message = request.args.get('error_message', 'An error occurred')
+    return f'Error: {error_message}'
+
     
 # Refresh access token
 @app.route('/refresh_token', methods=['GET'])
@@ -115,4 +146,4 @@ def refresh_token():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
