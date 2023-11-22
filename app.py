@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, url_for
 import base64
 import requests
 import random
@@ -26,7 +26,7 @@ def generate_random_string(length):
 # root state
 @app.route('/')
 def home():
-    return 'Welcome to Receiptify'
+    return render_template("index.html")
 
 # Login route
 @app.route('/login')
@@ -69,13 +69,18 @@ def callback():
 
         response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
         token_info = response.json()
-
-        # Handle the token information as needed (e.g., save it to session, database, etc.)
-        # For demonstration purposes, printing the token information
-        #TODO: change the below code to save it to session
-        print(token_info)
-
-        return 'Token obtained successfully'
+        
+        if 'access_token' in token_info:
+            # Save token info to session
+            session['access_token'] = token_info['access_token']
+            session['refresh_token'] = token_info.get('refresh_token', None)
+            
+            # Redirect the user to the id card page aka idcard.html
+            return render_template('idcard.html')
+        
+        else:
+            # To return error message if access token is not present
+            return redirect(url_for('error'))
     
 # Refresh access token
 @app.route('/refresh_token', methods=['GET'])
