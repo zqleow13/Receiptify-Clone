@@ -5,6 +5,7 @@ import requests
 import random
 import string
 import urllib.parse
+import json
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
@@ -15,6 +16,7 @@ app = Flask(__name__)
 
 # Configure session
 app.config["SESSION_TYPE"] = 'filesystem'
+Session(app)
 
 # Client ID & Redirect URI
 CLIENT_ID = os.getenv("client_ID")
@@ -40,6 +42,7 @@ def home():
 # Login route
 @app.route('/login')
 def login():
+    session.clear()
     state = generate_random_string(16)
     scope = 'user-read-private user-read-email' # user-read-private & user-read-email scopes: get current user's profile 
     
@@ -57,7 +60,6 @@ def login():
 
 
 # Request access token from Spotify
-# FIXME: state is now None, change the code below to match the state
 @app.route('/callback')
 def callback():
     code = request.args.get('code', None)
@@ -93,17 +95,36 @@ def callback():
             session['access_token'] = token_info['access_token']
             session['refresh_token'] = token_info.get('refresh_token', None)
             
+            # Use the access token to get user's profile information
+            user_profile_url = 'https://api.spotify.com/v1/me'
+            HEADERS = {'Authorization': 'Bearer ' + session['access_token']}
+            user_response = requests.get(user_profile_url, headers=HEADERS)
+            USER_DATA = user_response.json()
+            
+            # Store user data in the session
+            session['user_data'] = USER_DATA
+            
             # Redirect the user to the id card page aka idcard.html
-            return redirect(url_for('/idcard'))
+            return render_template('idcard.html', user_data=USER_DATA)
         
         else:
             # To return error message if access token is not present
-            return redirect(url_for('/error', error_message='token_error'))
+            return redirect(url_for('error', error_message='token_error'))
+        
+
         
 
 @app.route('/idcard')
 def idcard():
-    return render_template('idcard.html')
+    # Check if 'user_data' is present in the session
+    if 'user_data' in session:
+        # Retrieve 'user_data' from the session
+        USER_DATA = session['user_data']
+        return render_template('idcard.html', user_data=USER_DATA)
+    else:
+        # Handle the case where 'user_data' is not present
+        return redirect(url_for('error', error_message='user_data_not_found'))
+
         
         
 # Error route
