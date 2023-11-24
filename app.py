@@ -4,6 +4,7 @@ from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 load_dotenv()
 
 app = Flask(__name__)
@@ -49,7 +50,9 @@ def idcard():
     token_info = session["token_info"]
     sp = Spotify(auth=token_info["access_token"])
     user_data = sp.me()
-    return render_template("idcard.html", user_data=user_data)
+    now = datetime.now()
+    date_time = now.strftime("%d/%m/%Y")
+    return render_template("idcard.html", user_data=user_data, date_time=date_time)
 
 @app.route("/logout")
 def logout():

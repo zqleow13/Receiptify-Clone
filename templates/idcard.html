@@ -6,7 +6,20 @@
         <p>Your top 10 tracks</p>
     </div>
     <div class="cards">
-        <div class="front"></div>
-        <div class="back"></div>
+        <div class="front-container">
+            <div class="front-content">
+                <img id='profile_pic' src=" {{ user_data['images'][0]['url'] }}", alt="User's Profile Picture">
+                <p id="user_name">Name: {{ user_data['display_name'] }}</p>
+                <p id="todays_date"> D.O.B: {{ date_time }}</p>
+                <p id="user_country"> Country: {{ user_data['country'] }}</p>
+            </div>
+        </div>
+        <div class="back-container">
+            <div class="back-content">
+                <p id="top_tracks">
+                    xxx
+                </p>
+            </div>
+        </div>
     </div>
 {% endblock %}
