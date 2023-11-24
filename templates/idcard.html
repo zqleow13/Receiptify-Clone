@@ -1,12 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    {% if user_data %}
     <div>
-        <h1>{{ user_data[display_name] }}'s ID Card</h1>
+        <h1>'s ID Card</h1>
         <p>Your top 10 tracks</p>
     </div>
-    {% else %}
-        <p>User data is undefined</p>
-    {% endif %}
 {% endblock %}
