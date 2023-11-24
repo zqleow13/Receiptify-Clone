@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div>
-        <h1>'s ID Card</h1>
+    <div class="header">
+        <h1>{{ user_data['display_name'] }}'s ID Card</h1>
         <p>Your top 10 tracks</p>
+    </div>
+    <div class="cards">
+        <div class="front"></div>
+        <div class="back"></div>
     </div>
 {% endblock %}

@@ -1,11 +1,5 @@
-from flask import Flask, render_template, request, redirect, session, jsonify, url_for
+from flask import Flask, render_template, request, redirect, session, url_for
 from flask_session import Session
-import base64
-import requests
-import random
-import string
-import urllib.parse
-import json
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 import os
@@ -45,10 +39,10 @@ def callback():
     sp = Spotify(auth=token_info["access_token"])
     user_data = sp.me()
     session["user_data"] = user_data
-    return redirect(url_for("profile"))
+    return redirect(url_for("idcard"))
 
 @app.route("/idcard")
-def profile():
+def idcard():
     if "token_info" not in session:
         return redirect(url_for("login"))
     
