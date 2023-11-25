@@ -22,7 +22,7 @@ REDIRECT_URI = os.getenv("redirect_uri")
 # print(os.urandom(12))
 app.secret_key = os.getenv('secret_key')
 
-sp_oauth = SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, scope="user-read-private user-read-email")
+sp_oauth = SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, scope="user-read-private user-read-email user-top-read")
 
 @app.route("/")
 def home():
@@ -52,7 +52,12 @@ def idcard():
     user_data = sp.me()
     now = datetime.now()
     date_time = now.strftime("%d/%m/%Y")
-    return render_template("idcard.html", user_data=user_data, date_time=date_time)
+    last_month_tracks = sp.current_user_top_tracks(10, 0, "short_term")
+    last_six_months_tracks = sp.current_user_top_tracks(10, 0, "medium_term")
+    
+    
+    return render_template(
+        "idcard.html", user_data=user_data, date_time=date_time, last_month_tracks=last_month_tracks, last_six_months_tracks=last_six_months_tracks)
 
 @app.route("/logout")
 def logout():
