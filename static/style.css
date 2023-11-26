@@ -34,6 +34,11 @@
     border-radius: 12px;
 }
 
+#last-month:hover {
+    background-color: #324AA5;
+    cursor: pointer;
+}
+
 #last-six-months {
     background-color: #4969E1;
     border: none;
@@ -45,4 +50,17 @@
     font-size: 16px;
     margin: 4px 2px;
     border-radius: 12px;
+}
+
+#last-six-months:hover {
+    background-color: #324AA5;
+    cursor: pointer;
+}
+
+#last-month-tracks {
+    display: none;
+}
+
+#last-six-months-tracks {
+    display: none;
 }

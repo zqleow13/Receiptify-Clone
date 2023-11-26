@@ -22,12 +22,12 @@
         </div>
         <div class="back-container">
             <div class="back-content">
-                 <ol id="last_month_tracks">
+                 <ol id="last-month-tracks">
                     {% for track in last_month_tracks['items'] %}
                     <li>{{ track['name'] }} - {{ track['artists'][0]['name'] }}</li>
                     {% endfor %}
                 </ol>
-                <ol id="last_six_months_tracks">
+                <ol id="last-six-months-tracks">
                     {% for track in last_six_months_tracks['items'] %}
                     <li>{{ track['name'] }} - {{ track['artists'][0]['name'] }}</li>
                     {% endfor %}
