@@ -6,6 +6,31 @@ body {
     margin: 0px;
 }
 
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#title {
+    font-size: 100px;
+}
+
+#subtitle {
+    font-size: 2.5em;
+    margin-top: -50px;
+}
+
+.logout {
+    margin-bottom: 10px;
+    margin-top: -100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #login {
     background-color: #1ed760;
     border: none;
@@ -24,7 +49,7 @@ body {
     cursor: pointer;
 }
 
-#last-month {
+#last-month, #last-six-months, #logout {
     background-color: #4969E1;
     border: none;
     color: white;
@@ -37,78 +62,57 @@ body {
     border-radius: 12px;
 }
 
-#last-month:hover {
+#last-month:hover, #last-six-months:hover, #logout:hover {
     background-color: #324AA5;
     cursor: pointer;
-}
-
-#last-six-months {
-    background-color: #4969E1;
-    border: none;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    border-radius: 12px;
-}
-
-#last-six-months:hover {
-    background-color: #324AA5;
-    cursor: pointer;
-}
-
-#last-month-tracks {
-    display: none;
 }
 
 #last-six-months-tracks {
     display: none;
 }
 
-.header, .months-buttons {
+.header, .months-buttons, #logout {
     text-align: center;
 }
 
 .cards {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 
 .front-container, .back-container {
     height: 100vh;
-    width: 100%; 
-    display: flex;   
+    display: flex;
+    justify-content: center;
+    align-items: center;   
 }
 
-.front-content {
-    display: flex;
-    flex-basis: 100%;
+.front-content, .back-content {
+    width: 30em;
+    max-width: 100%;
     border: 4px solid black;
     border-radius: 12px;
     max-width: 30em;
     margin: auto;
     padding: 1em;
+    display: flex;
 }
 
 .profile-pic {
-    display: flex;
-    flex-basis: 33.3%;
-    justify-content: center;
-    align-items: center;
+    width: 30%;
+    margin-right: 2em;
 }
 
 .profile-pic img {
-    min-width: 70%;
+    width: 100%;
     border-radius: 12px;
 }
 
 .profile-desc {
+    flex-grow: 1;
     display: flex;
-    flex-grow: 66.6%;
     flex-direction: column;
+    justify-content: center;
 }

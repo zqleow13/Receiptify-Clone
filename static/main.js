@@ -7,13 +7,13 @@ let lastMonthClicked = false;
 let lastSixMonthsClicked = false;
 
 lastMonthTracksButton.addEventListener('click', () => {
-    lastMonthClicked = !lastMonthClicked;
+    lastMonthClicked = true;
     lastSixMonthsClicked = false;
     toggleDisplay();
 });
 
 lastSixMonthsTracksButton.addEventListener('click', () => {
-    lastSixMonthsClicked = !lastSixMonthsClicked;
+    lastSixMonthsClicked = true;
     lastMonthClicked = false;
     toggleDisplay();
 });
