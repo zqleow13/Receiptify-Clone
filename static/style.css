@@ -68,6 +68,17 @@ body {
     display: none;
 }
 
+.header, .months-buttons {
+    text-align: center;
+}
+
+.cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .front-container, .back-container {
     height: 100vh;
     width: 100%; 
@@ -84,16 +95,20 @@ body {
     padding: 1em;
 }
 
-/* .profile-pic {
+.profile-pic {
+    display: flex;
     flex-basis: 33.3%;
+    justify-content: center;
+    align-items: center;
 }
 
 .profile-pic img {
-    max-width: 100%;
+    min-width: 70%;
     border-radius: 12px;
 }
 
 .profile-desc {
+    display: flex;
     flex-grow: 66.6%;
     flex-direction: column;
-} */
+}
