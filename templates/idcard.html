@@ -14,10 +14,14 @@
     <div class="cards">
         <div class="front-container">
             <div class="front-content">
-                <img id='profile_pic' src=" {{ user_data['images'][0]['url'] }}", alt="User's Profile Picture">
-                <p id="user_name">Name: {{ user_data['display_name'] }}</p>
-                <p id="todays_date"> D.O.B: {{ date_time }}</p>
-                <p id="user_country"> Country: {{ user_data['country'] }}</p>
+                <div class="profile-pic">
+                    <img src=" {{ user_data['images'][0]['url'] }}", alt="User's Profile Picture">
+                </div>
+                <div class="profile-desc">
+                    <p id="user-name">Name: {{ user_data['display_name'] }}</p>
+                    <p id="todays-date">D.O.B: {{ date_time }}</p>
+                    <p id="user-country">Country: {{ user_data['country'] }}</p>
+                </div>
             </div>
         </div>
         <div class="back-container">
