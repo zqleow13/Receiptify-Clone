@@ -9,8 +9,7 @@ Available stats include:
 1) Top 10 tracks last month
 2) Top 10 tracks for the last 6 months
 
-I want to make Identeafy as I am a huge fan of Spotify and I don't want to wait for Spotify Wrapped to come out at the end of the year. 
-I want to be able to access the stats as and when I want to and I want the stats to be shown in a different setting.
+I want to make Identeafy as I am a huge fan of Spotify and I don't want to wait for Spotify Wrapped to come out at the end of the year. I also want to be able to access the stats as and when I want to and I want the stats to be shown in an interesting way. 
 
 ## Built With
 1) Python 3.11.5
